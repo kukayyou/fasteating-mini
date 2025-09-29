@@ -1,0 +1,263 @@
+.stats-container {
+    padding: 20rpx;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+  }
+  
+  /* 标签页样式 */
+  .tabs {
+    display: flex;
+    background: white;
+    border-radius: 12rpx;
+    margin-bottom: 20rpx;
+    box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+  }
+  
+  .tab-item {
+    flex: 1;
+    text-align: center;
+    padding: 25rpx 0;
+    font-size: 32rpx;
+    color: #666;
+    position: relative;
+  }
+  
+  .tab-item.active {
+    color: #4CAF50;
+    font-weight: bold;
+  }
+  
+  .tab-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80rpx;
+    height: 6rpx;
+    background: #4CAF50;
+    border-radius: 3rpx;
+  }
+  
+  .tab-content {
+    background: white;
+    border-radius: 16rpx;
+    padding: 30rpx;
+    box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+  }
+  
+  /* 日期选择器 */
+  .date-picker {
+    margin-bottom: 30rpx;
+    text-align: center;
+  }
+  
+  .date-display {
+    display: inline-block;
+    padding: 15rpx 40rpx;
+    background: #f5f5f5;
+    border-radius: 50rpx;
+    font-size: 32rpx;
+    color: #333;
+  }
+  
+  /* 摘要统计 */
+  .day-summary,
+  .week-summary,
+  .month-summary {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30rpx;
+    padding-bottom: 20rpx;
+    border-bottom: 1rpx solid #eee;
+  }
+  
+  .summary-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .summary-value {
+    font-size: 40rpx;
+    font-weight: bold;
+    color: #4CAF50;
+    margin-bottom: 10rpx;
+  }
+  
+  .summary-label {
+    font-size: 28rpx;
+    color: #666;
+  }
+  
+  /* 时间线 */
+  .timeline-container {
+    margin-top: 30rpx;
+  }
+  
+  .section-title {
+    font-size: 36rpx;
+    font-weight: bold;
+    margin-bottom: 20rpx;
+    color: #333;
+    border-left: 8rpx solid #4CAF50;
+    padding-left: 20rpx;
+  }
+  
+  .empty-tip {
+    text-align: center;
+    color: #999;
+    padding: 40rpx 0;
+    font-size: 30rpx;
+  }
+  
+  .timeline {
+    position: relative;
+    padding-left: 40rpx;
+  }
+  
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 15rpx;
+    top: 0;
+    bottom: 0;
+    width: 2rpx;
+    background: #e0e0e0;
+  }
+  
+  .timeline-item {
+    position: relative;
+    padding: 20rpx 0 20rpx 40rpx;
+  }
+  
+  .timeline-dot {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30rpx;
+    height: 30rpx;
+    border-radius: 50%;
+    background: #4CAF50;
+    z-index: 1;
+  }
+  
+  .timeline-content {
+    background: #f9f9f9;
+    border-radius: 12rpx;
+    padding: 20rpx;
+  }
+  
+  .meal-time {
+    font-size: 32rpx;
+    font-weight: bold;
+    color: #333;
+    margin-right: 20rpx;
+  }
+  
+  .meal-type {
+    font-size: 28rpx;
+    color: #4CAF50;
+  }
+  
+  /* 周统计 */
+  .week-header,
+  .month-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30rpx;
+  }
+  
+  .week-title,
+  .month-title {
+    font-size: 34rpx;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .week-nav,
+  .month-nav {
+    width: 60rpx;
+    height: 60rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f5f5f5;
+  }
+  
+  .nav-icon {
+    width: 30rpx;
+    height: 30rpx;
+  }
+  
+  .week-calendar,
+  .month-calendar {
+    background: #f9f9f9;
+    border-radius: 16rpx;
+    padding: 20rpx;
+  }
+  
+  .weekdays {
+    display: flex;
+    margin-bottom: 20rpx;
+  }
+  
+  .weekday {
+    flex: 1;
+    text-align: center;
+    font-size: 28rpx;
+    color: #666;
+  }
+  
+  .week-days,
+  .month-days {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .day-cell {
+    width: 14.28%; /* 100% / 7 */
+    aspect-ratio: 1/1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-bottom: 10rpx;
+    position: relative;
+  }
+  
+  .day-date {
+    font-size: 30rpx;
+    color: #333;
+  }
+  
+  .day-status {
+    font-size: 24rpx;
+    margin-top: 5rpx;
+  }
+  
+  /* 状态样式 */
+  .completed {
+    background: #e8f5e9;
+    color: #4CAF50;
+  }
+  
+  .incomplete {
+    background: #fff8e1;
+    color: #ff9800;
+  }
+  
+  .today {
+    background: #d1f8d2;
+    border: 1rpx  #4CAF50;
+  }
+  
+  /* 月统计 */
+  .month-days .day-cell {
+    width: 14.28%; /* 100% / 7 */
+    aspect-ratio: 1/1;
+  }

@@ -1,0 +1,39 @@
+{
+    "pages": [
+      "pages/index/index",
+      "pages/setting/setting",
+      "pages/stats/stats"
+    ],
+    "window": {
+      "backgroundColor": "#F5F5F5",
+      "backgroundTextStyle": "light",
+      "navigationBarBackgroundColor": "#4CAF50",
+      "navigationBarTitleText": "轻断食助手",
+      "navigationBarTextStyle": "white"
+    },
+    "tabBar": {
+      "color": "#999",
+      "selectedColor": "#4CAF50",
+      "list": [
+        {
+          "pagePath": "pages/index/index",
+          "text": "今日",
+          "iconPath": "images/today.png",
+          "selectedIconPath": "images/today-active.png"
+        },
+        {
+          "pagePath": "pages/stats/stats",
+          "text": "断食记录",
+          "iconPath": "images/stats.png",
+          "selectedIconPath": "images/stats-active.png"
+        },
+        {
+          "pagePath": "pages/setting/setting",
+          "text": "设置",
+          "iconPath": "images/setting.png",
+          "selectedIconPath": "images/setting-active.png"
+        }
+      ]
+    },
+    "sitemapLocation": "sitemap.json"
+  }

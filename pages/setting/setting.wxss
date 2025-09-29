@@ -1,0 +1,224 @@
+.setting-container {
+    padding: 30rpx;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+  }
+  
+  /* 顶部标题 */
+  .setting-header {
+    margin-bottom: 40rpx;
+    text-align: center;
+  }
+  
+  .header-title {
+    font-size: 48rpx;
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 15rpx;
+  }
+  
+  .header-subtitle {
+    font-size: 32rpx;
+    color: #666;
+  }
+  
+  /* 卡片通用样式 */
+  .mode-card, .time-card, .reminder-card {
+    background: white;
+    border-radius: 20rpx;
+    padding: 30rpx;
+    margin-bottom: 30rpx;
+    box-shadow: 0 4rpx 15rpx rgba(0,0,0,0.05);
+  }
+  
+  .card-title {
+    font-size: 36rpx;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 30rpx;
+    border-left: 8rpx solid #4CAF50;
+    padding-left: 20rpx;
+  }
+  
+  /* 模式选项 */
+  .mode-options {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mode-option {
+    display: flex;
+    align-items: center;
+    padding: 30rpx;
+    border-radius: 16rpx;
+    margin-bottom: 20rpx;
+    border: 2rpx solid #eee;
+    transition: all 0.3s ease;
+  }
+  
+  .mode-option.active {
+    border-color: #4CAF50;
+    background: rgba(76, 175, 80, 0.05);
+    box-shadow: 0 4rpx 10rpx rgba(76, 175, 80, 0.1);
+  }
+  
+  .mode-icon {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 25rpx;
+  }
+  
+  .icon-image {
+    width: 60rpx;
+    height: 60rpx;
+  }
+  
+  .mode-info {
+    flex: 1;
+  }
+  
+  .mode-name {
+    font-size: 34rpx;
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 10rpx;
+  }
+  
+  .mode-desc {
+    font-size: 28rpx;
+    color: #666;
+  }
+  
+  .mode-check {
+    width: 50rpx;
+    height: 50rpx;
+    border-radius: 50%;
+    border: 2rpx solid #4CAF50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .check-icon {
+    font-size: 36rpx;
+    color: #4CAF50;
+  }
+  
+  /* 时间设置 */
+  .time-setting {
+    padding: 0 15rpx;
+  }
+  
+  .time-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 25rpx 0;
+    border-bottom: 1rpx solid #eee;
+  }
+  
+  .time-item:last-child {
+    border-bottom: none;
+  }
+  
+  .time-label {
+    font-size: 32rpx;
+    color: #333;
+  }
+  
+  .time-value {
+    font-size: 32rpx;
+    color: #4CAF50;
+    font-weight: bold;
+    padding: 10rpx 20rpx;
+    border-radius: 8rpx;
+    background: #f5f5f5;
+  }
+  
+  .time-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30rpx;
+    font-size: 28rpx;
+    color: #666;
+    background: #f9f9f9;
+    padding: 20rpx;
+    border-radius: 12rpx;
+  }
+  
+  .time-info text {
+    margin-bottom: 8rpx;
+  }
+  
+  /* 提醒设置 */
+  .reminder-info {
+    font-size: 28rpx;
+    color: #666;
+    margin-bottom: 20rpx;
+  }
+  
+  .reminder-times {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .reminder-time {
+    background: #e8f5e9;
+    color: #4CAF50;
+    padding: 20rpx 30rpx;
+    border-radius: 50rpx;
+    margin-right: 20rpx;
+    margin-bottom: 15rpx;
+    font-size: 28rpx;
+    display: flex;
+    align-items: center;
+  }
+  
+  .time-icon {
+    font-size: 36rpx;
+    margin-right: 10rpx;
+  }
+  
+  /* 成功提示 */
+  .success-toast {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .toast-content {
+    background: white;
+    border-radius: 20rpx;
+    padding: 50rpx 60rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 10rpx 30rpx rgba(0,0,0,0.2);
+  }
+  
+  .toast-icon {
+    width: 100rpx;
+    height: 100rpx;
+    margin-bottom: 30rpx;
+  }
+  
+  .toast-text {
+    font-size: 36rpx;
+    font-weight: bold;
+    color: #333;
+  }

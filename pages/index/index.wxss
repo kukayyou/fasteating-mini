@@ -1,0 +1,343 @@
+.container {
+    padding: 30rpx;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    padding-bottom: 120rpx; /* 为浮动按钮留出空间 */
+  }
+  
+  /* 状态卡片 */
+  .status-card {
+    border-radius: 20rpx;
+    padding: 30rpx;
+    margin-bottom: 40rpx;
+    color: white;
+    box-shadow: 0 6rpx 18rpx rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .status-card.eating {
+    background: linear-gradient(135deg, #4CAF50, #8BC34A);
+  }
+  
+  .status-card.fasting {
+    background: linear-gradient(135deg, #2196F3, #03A9F4);
+  }
+  
+  .status-content {
+    flex: 1;
+  }
+  
+  .status-text {
+    font-size: 48rpx;
+    font-weight: bold;
+    margin-bottom: 15rpx;
+  }
+  
+  /* 新增状态文字颜色 */
+  .eating-text {
+    color: white; /* 进食中状态文字为白色 */
+  }
+  
+  .fasting-text {
+    color: #FFEB3B; /* 断食中状态文字为黄色 */
+  }
+  
+  .status-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .timer {
+    font-size: 32rpx;
+    margin-bottom: 8rpx;
+  }
+  
+  .time-range {
+    font-size: 28rpx;
+    opacity: 0.9;
+  }
+  
+  /* 进度条区域 */
+  .progress-section {
+    background: white;
+    border-radius: 16rpx;
+    padding: 30rpx;
+    margin-bottom: 40rpx;
+    box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+  }
+  
+  .progress-container {
+    margin-bottom: 40rpx;
+  }
+  
+  .progress-bar {
+    height: 24rpx;
+    background: #eee;
+    border-radius: 12rpx;
+    overflow: hidden;
+    margin-bottom: 15rpx;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background: #4CAF50;
+    border-radius: 12rpx;
+    transition: width 0.5s ease;
+  }
+  
+  .progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 26rpx;
+    color: #666;
+  }
+  
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 28rpx;
+    color: #333;
+    padding-top: 15rpx;
+    border-top: 1rpx solid #eee;
+  }
+  
+  /* 进餐记录区域 */
+  .meal-section {
+    background: white;
+    border-radius: 16rpx;
+    padding: 30rpx;
+    box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25rpx;
+  }
+  
+  .section-title {
+    font-size: 36rpx;
+    font-weight: bold;
+    color: #333;
+    border-left: 8rpx solid #4CAF50;
+    padding-left: 20rpx;
+  }
+  
+  .meal-count {
+    font-size: 28rpx;
+    color: #666;
+  }
+  
+  .empty-tip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40rpx 0;
+  }
+  
+  .empty-icon {
+    width: 120rpx;
+    height: 120rpx;
+    margin-bottom: 20rpx;
+    opacity: 0.3;
+  }
+  
+  .empty-tip text {
+    font-size: 30rpx;
+    color: #999;
+  }
+  
+  .meal-records {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .meal-item {
+    display: flex;
+    align-items: center;
+    padding: 25rpx 0;
+    border-bottom: 1rpx solid #eee;
+  }
+  
+  .meal-item:last-child {
+    border-bottom: none;
+  }
+  
+  .meal-time {
+    font-size: 36rpx;
+    font-weight: bold;
+    color: #333;
+    width: 150rpx;
+  }
+  
+  .meal-type {
+    font-size: 28rpx;
+    color: #4CAF50;
+    background: #e8f5e9;
+    padding: 8rpx 20rpx;
+    border-radius: 30rpx;
+    margin-left: 20rpx;
+  }
+  
+  .meal-actions {
+    display: flex;
+    margin-left: auto;
+  }
+  
+  .edit-icon, .delete-icon {
+    width: 50rpx;
+    height: 50rpx;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15rpx;
+    font-size: 32rpx;
+  }
+  
+  .edit-icon {
+    background: #e3f2fd;
+    color: #2196F3;
+  }
+  
+  .delete-icon {
+    background: #ffebee;
+    color: #F44336;
+  }
+  
+  /* 浮动记录按钮 */
+  .floating-button {
+    position: fixed;
+    bottom: 60rpx;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #d6c2ff, #b8a1ff);
+    color: white;
+    border-radius: 50rpx;
+    font-size: 34rpx;
+    font-weight: bold;
+    box-shadow: 0 8rpx 20rpx rgba(184, 161, 255, 0.3);
+    display: flex;
+    align-items: center;
+    padding: 20rpx 40rpx;
+    transition: all 0.3s ease;
+  }
+  
+  .floating-button:active {
+    transform: translateX(-50%) scale(0.95);
+    box-shadow: 0 4rpx 10rpx rgba(184, 161, 255, 0.2);
+  }
+  
+  .button-icon {
+    font-size: 44rpx;
+    margin-right: 15rpx;
+  }
+  /* 原有样式保持不变，只添加时间选择器样式 */
+
+/* 时间选择器弹窗 */
+.time-picker-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .picker-container {
+    background: white;
+    width: 80%;
+    border-radius: 16rpx;
+    overflow: hidden;
+    box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+  }
+  
+  .picker-header {
+    padding: 30rpx;
+    text-align: center;
+    background: #f5f5f5;
+    border-bottom: 1rpx solid #eee;
+  }
+  
+  .picker-title {
+    font-size: 36rpx;
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 10rpx;
+  }
+  
+  .picker-subtitle {
+    font-size: 28rpx;
+    color: #666;
+  }
+  
+  .picker-display {
+    padding: 40rpx 0;
+    text-align: center;
+    background: #f9f9f9;
+  }
+  
+  .picker-time {
+    font-size: 48rpx;
+    font-weight: bold;
+    color: #4CAF50;
+    display: block;
+    margin-bottom: 15rpx;
+  }
+  
+  .picker-hint {
+    font-size: 28rpx;
+    color: #999;
+  }
+  
+  .picker-buttons {
+    display: flex;
+    border-top: 1rpx solid #eee;
+  }
+  
+  .picker-btn {
+    flex: 1;
+    height: 100rpx;
+    line-height: 100rpx;
+    font-size: 32rpx;
+    border-radius: 0;
+    background: transparent;
+    position: relative;
+  }
+  
+  .picker-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1rpx;
+    background: #eee;
+  }
+  
+  .picker-btn:first-child::after {
+    display: none;
+  }
+  
+  .picker-btn.cancel {
+    color: #666;
+  }
+  
+  .picker-btn.confirm {
+    color: #4CAF50;
+    font-weight: bold;
+  }
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25rpx;
+  }
+  

@@ -1,0 +1,184 @@
+<view class="stats-container">
+  <!-- 标签页导航 -->
+  <view class="tabs">
+    <view 
+      class="tab-item {{activeTab === 'day' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="day"
+    >
+      今日记录
+    </view>
+    <view 
+      class="tab-item {{activeTab === 'week' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="week"
+    >
+      周记录
+    </view>
+    <view 
+      class="tab-item {{activeTab === 'month' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="month"
+    >
+      月记录
+    </view>
+  </view>
+  
+  <!-- 日统计视图 -->
+  <view class="tab-content" wx:if="{{activeTab === 'day'}}">
+    <view class="date-picker">
+      <picker mode="date" value="{{selectedDate}}" bindchange="changeDate">
+        <view class="date-display">{{selectedDate}}</view>
+      </picker>
+    </view>
+    
+    <view class="day-stats">
+      <view class="day-summary">
+        <view class="summary-item">
+          <text class="summary-value">{{dayStats.completed ? '完成' : '未完成'}}</text>
+          <text class="summary-label">完成状态</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-value">{{dayStats.mealCount}}</text>
+          <text class="summary-label">进餐次数</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-value">{{dayStats.duration}}小时</text>
+          <text class="summary-label">进食窗口</text>
+        </view>
+      </view>
+      
+      <view class="timeline-container">
+        <view class="section-title">进餐时间线</view>
+        <view wx:if="{{dayStats.meals.length === 0}}" class="empty-tip">
+          当日无进餐记录
+        </view>
+        <view wx:else class="timeline">
+          <block wx:for="{{dayStats.meals}}" wx:key="index">
+            <view class="timeline-item">
+              <view class="timeline-dot"></view>
+              <view class="timeline-content">
+                <text class="meal-time">{{item.time}}</text>
+                <text class="meal-type">{{item.type}}</text>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 周统计视图 -->
+  <view class="tab-content" wx:if="{{activeTab === 'week'}}">
+    <view class="week-header">
+      <view class="week-nav" bindtap="prevWeek">
+        <image src="/images/arrow-left.png" class="nav-icon"></image>
+      </view>
+      <view class="week-title">
+        {{weekStart}} 至 {{weekEnd}}
+      </view>
+      <view class="week-nav" bindtap="nextWeek">
+        <image src="/images/arrow-right.png" class="nav-icon"></image>
+      </view>
+    </view>
+    
+    <view class="week-stats">
+      <view class="week-summary">
+        <view class="summary-item">
+          <text class="summary-value">{{weekStats.completedDays}}</text>
+          <text class="summary-label">完成天数</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-value">{{weekStats.totalDays}}</text>
+          <text class="summary-label">总天数</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-value">{{weekStats.completionRate}}%</text>
+          <text class="summary-label">完成率</text>
+        </view>
+      </view>
+      
+      <view class="week-calendar">
+        <view class="weekdays">
+          <view class="weekday">一</view>
+          <view class="weekday">二</view>
+          <view class="weekday">三</view>
+          <view class="weekday">四</view>
+          <view class="weekday">五</view>
+          <view class="weekday">六</view>
+          <view class="weekday">日</view>
+        </view>
+        
+        <view class="week-days">
+          <block wx:for="{{weekDays}}" wx:key="date">
+            <view 
+              class="day-cell {{item.date === today ? 'today' : ''}} {{item.completed ? 'completed' : 'incomplete'}}"
+              bindtap="selectDay"
+              data-date="{{item.date}}"
+            >
+              <text class="day-date">{{item.day}}</text>
+              <text class="day-status">{{item.completed ? '✓' : '✗'}}</text>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 月统计视图 -->
+  <view class="tab-content" wx:if="{{activeTab === 'month'}}">
+    <view class="month-header">
+      <view class="month-nav" bindtap="prevMonth">
+        <image src="/images/arrow-left.png" class="nav-icon"></image>
+      </view>
+      <view class="month-title">
+        {{currentMonth}}
+      </view>
+      <view class="month-nav" bindtap="nextMonth">
+        <image src="/images/arrow-right.png" class="nav-icon"></image>
+      </view>
+    </view>
+    
+    <view class="month-stats">
+      <view class="month-summary">
+        <view class="summary-item">
+          <text class="summary-value">{{monthStats.completedDays}}</text>
+          <text class="summary-label">完成天数</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-value">{{monthStats.totalDays}}</text>
+          <text class="summary-label">总天数</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-value">{{monthStats.completionRate}}%</text>
+          <text class="summary-label">完成率</text>
+        </view>
+      </view>
+      
+      <view class="month-calendar">
+        <view class="weekdays">
+          <view class="weekday">日</view>
+          <view class="weekday">一</view>
+          <view class="weekday">二</view>
+          <view class="weekday">三</view>
+          <view class="weekday">四</view>
+          <view class="weekday">五</view>
+          <view class="weekday">六</view>
+        </view>
+        
+        <view class="month-days">
+          <block wx:for="{{monthDays}}" wx:key="date">
+            <view 
+              class="day-cell {{item.date === today ? 'today' : ''}} {{item.completed ? 'completed' : 'incomplete'}}"
+              bindtap="selectDay"
+              data-date="{{item.date}}"
+            >
+              <text class="day-date">{{item.day}}</text>
+              <text class="day-status">{{item.completed ? '✓' : '✗'}}</text>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

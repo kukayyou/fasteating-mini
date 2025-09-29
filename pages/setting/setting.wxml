@@ -1,0 +1,102 @@
+<view class="setting-container">
+  <!-- 顶部标题 >
+  <view class="setting-header">
+    <text class="header-title">断食设置</text>
+    <text class="header-subtitle">选择适合您的断食模式</text>
+  </view-->
+  
+  <!-- 模式选择卡片 -->
+  <view class="mode-card">
+    <view class="card-title">断食模式</view>
+    
+    <view class="mode-options">
+      <view 
+        class="mode-option {{fastingMode === '168' ? 'active' : ''}}" 
+        bindtap="selectMode" 
+        data-mode="168"
+      >
+        <view class="mode-icon">
+          <image src="/images/mode-168.png" class="icon-image"></image>
+        </view>
+        <view class="mode-info">
+          <text class="mode-name">16:8 断食法</text>
+          <text class="mode-desc">每天在8小时内完成3餐</text>
+        </view>
+        <view class="mode-check">
+          <view class="check-icon" wx:if="{{fastingMode === '168'}}">✓</view>
+        </view>
+      </view>
+      
+      <view 
+        class="mode-option {{fastingMode === '204' ? 'active' : ''}}" 
+        bindtap="selectMode" 
+        data-mode="204"
+      >
+        <view class="mode-icon">
+          <image src="/images/mode-204.png" class="icon-image"></image>
+        </view>
+        <view class="mode-info">
+          <text class="mode-name">20:4 断食法</text>
+          <text class="mode-desc">每天在4小时内完成2餐</text>
+        </view>
+        <view class="mode-check">
+          <view class="check-icon" wx:if="{{fastingMode === '204'}}">✓</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 时间设置卡片 -->
+  <view class="time-card">
+    <view class="card-title">进食时间</view>
+    
+    <view class="time-setting">
+      <view class="time-item">
+        <text class="time-label">开始时间</text>
+        <picker 
+          mode="time" 
+          value="{{eatingStart}}" 
+          bindchange="changeStartTime"
+        >
+          <view class="time-value">{{eatingStart}}</view>
+        </picker>
+      </view>
+      
+      <view class="time-item">
+        <text class="time-label">结束时间</text>
+        <view class="time-value">{{eatingEnd}}（无需选择）</view>
+      </view>
+    
+      <view class="time-info">
+        <text>当前进食窗口：{{eatingStart}} - {{eatingEnd}}</text>
+        <text>（{{fastingMode === '168' ? '8小时' : '4小时'}}）</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 提醒设置卡片 -->
+  <view class="reminder-card">
+    <!--view class="card-title">进餐提醒</view-->
+    
+    <view class="reminder-info">
+      系统将在以下时间提醒您进餐：
+    </view>
+    
+    <view class="reminder-times">
+      <block wx:for="{{reminderTimes}}" wx:key="index">
+        <view class="reminder-time">
+          <text class="time-icon">⏰</text>
+          <text>{{item}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+  
+  <!-- 成功提示弹框 -->
+  <view class="success-toast" wx:if="{{showSuccessToast}}">
+    <view class="toast-content">
+      <!--image src="/images/success.png" class="toast-icon"></image-->
+      <text class="toast-text">设置已保存</text>
+    </view>
+  </view>
+</view>

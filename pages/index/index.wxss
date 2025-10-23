@@ -1,243 +1,338 @@
-/* index/index.wxss */
+/* 整合所有样式 */
 .container {
     padding: 30rpx;
     background-color: #f8f9fa;
     min-height: 100vh;
-    padding-bottom: 120rpx; /* 为浮动按钮留出空间 */
+    padding-bottom: 120rpx;
     box-sizing: border-box;
-  }
-  
-  /* 状态卡片 */
-  .status-card {
+}
+
+/* 状态卡片样式 */
+.status-card {
     border-radius: 20rpx;
     padding: 30rpx;
     margin-bottom: 30rpx;
     color: white;
-    box-shadow: 0 6rpx 18rpx rgba(0,0,0,0.1);
+    box-shadow: 0 6rpx 18rpx rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     box-sizing: border-box;
     text-align: center;
-    transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  .status-card.eating {
+}
+
+.status-card.eating {
     background: linear-gradient(135deg, #4CAF50, #8BC34A);
-  }
-  
-  .status-card.fasting {
+}
+
+.status-card.fasting {
     background: linear-gradient(135deg, #2196F3, #03A9F4);
-  }
-  
-  .status-content {
+}
+
+.status-content {
     flex: 1;
-  }
-  
-  .status-text {
+}
+
+.status-text {
     font-size: 48rpx;
     font-weight: bold;
     margin-bottom: 15rpx;
-    transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  .eating-text {
+}
+
+.eating-text {
     color: white;
-  }
-  
-  .fasting-text {
+}
+
+.fasting-text {
     color: #FFEB3B;
-  }
-  
-  .status-info {
+}
+
+.status-info {
     display: flex;
     flex-direction: column;
-  }
-  
-  .timer {
+}
+
+.timer {
     font-size: 32rpx;
     margin-bottom: 8rpx;
-  }
-  
-  .time-range {
+}
+
+.time-range {
     font-size: 28rpx;
     opacity: 0.9;
-  }
-  
-  /* 进度条区域 */
-  .progress-section {
+}
+
+/* 圆形时间轴样式 */
+.circle-timeline-container {
+    position: relative;
+    width: 480rpx;
+    height: 480rpx;
+    margin: 30rpx auto;
+}
+
+.time-pointer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2rpx;
+    height: 180rpx;
+    background-color: #ff5722;
+    transform-origin: bottom center;
+    z-index: 1;
+}
+
+.circle-bg {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    position: relative;
+    background-color: #e3f2fd;
+    overflow: hidden;
+}
+
+.circle-fasting {
+    background-color: #e3f2fd !important;
+}
+
+.circle-eating {
+    background-color: #e8f5e9 !important;
+}
+
+.circle-labels {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.circle-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: 0 0;
+}
+
+.circle-label text {
+    font-size: 28rpx;
+    color: #666;
+}
+
+.circle-now {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.circle-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20rpx;
+    height: 20rpx;
+    border-radius: 50%;
+    background-color: #ff5722;
+    transform: translate(-50%, -50%);
+}
+
+.now-indicator {
+    width: 20rpx;
+    height: 20rpx;
+    border-radius: 50%;
+    background-color: #ff5722;
+    box-shadow: 0 0 0 8rpx rgba(255, 87, 34, 0.2);
+    z-index: 2;
+}
+
+.now-label {
+    margin-top: 10rpx;
+    font-size: 28rpx;
+    font-weight: bold;
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5rpx 10rpx;
+    border-radius: 4rpx;
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 进度条样式 */
+.progress-section {
     background: white;
     border-radius: 16rpx;
     padding: 30rpx;
     margin-bottom: 30rpx;
-    box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
     width: 100%;
     box-sizing: border-box;
-  }
-  
-  .progress-container {
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25rpx;
+}
+
+.section-title {
+    font-size: 36rpx;
+    font-weight: bold;
+    color: #333;
+    border-left: 8rpx solid #4CAF50;
+    padding-left: 20rpx;
+}
+
+.progress-percent {
+    font-size: 32rpx;
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.progress-container {
     margin-bottom: 40rpx;
-  }
-  
-  .progress-bar {
+}
+
+.progress-bar {
     height: 24rpx;
     background: #eee;
     border-radius: 12rpx;
     overflow: hidden;
     margin-bottom: 15rpx;
-  }
-  
-  .progress-fill {
+}
+
+.progress-fill {
     height: 100%;
     background: #4CAF50;
     border-radius: 12rpx;
     transition: width 0.5s ease;
-  }
-  
-  .progress-labels {
+}
+
+.progress-labels {
     display: flex;
     justify-content: space-between;
     font-size: 26rpx;
     color: #666;
-  }
-  
-  .progress-info {
+}
+
+.progress-info {
     display: flex;
     justify-content: space-between;
     font-size: 28rpx;
     color: #333;
     padding-top: 15rpx;
     border-top: 1rpx solid #eee;
-  }
-  
-  /* 进餐记录区域 */
-  .meal-section {
+}
+
+/* 进餐记录样式 */
+.meal-section {
     background: white;
     border-radius: 16rpx;
     padding: 30rpx;
     margin-bottom: 30rpx;
-    box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
     width: 100%;
     box-sizing: border-box;
     min-height: 500rpx;
     display: flex;
     flex-direction: column;
-  }
-  
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25rpx;
-    flex-shrink: 0;
-  }
-  
-  .section-title {
-    font-size: 36rpx;
-    font-weight: bold;
-    color: #333;
-    border-left: 8rpx solid #4CAF50;
-    padding-left: 20rpx;
-  }
-  
-  .meal-count {
+}
+
+.meal-count {
     font-size: 28rpx;
     color: #666;
-  }
-  
-  /* 滚动容器 */
-  .meal-scroll-container {
+}
+
+.meal-scroll-container {
     flex-grow: 1;
     overflow: hidden;
     position: relative;
-  }
-  
-  .meal-content {
+}
+
+.meal-content {
     width: 100%;
     height: 100%;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding-right: 10rpx;
-  }
-  
-  .meal-content::-webkit-scrollbar {
+}
+
+.meal-content::-webkit-scrollbar {
     width: 6rpx;
-  }
-  
-  .meal-content::-webkit-scrollbar-track {
+}
+
+.meal-content::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-radius: 3rpx;
-  }
-  
-  .meal-content::-webkit-scrollbar-thumb {
+}
+
+.meal-content::-webkit-scrollbar-thumb {
     background: #ddd;
     border-radius: 3rpx;
-  }
-  
-  .meal-content::-webkit-scrollbar-thumb:hover {
-    background: #bbb;
-  }
-  
-  .empty-tip {
+}
+
+.empty-tip {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 40rpx 0;
     height: 100%;
     justify-content: center;
-  }
-  
-  .empty-icon {
+}
+
+.empty-icon {
     width: 120rpx;
     height: 120rpx;
     margin-bottom: 20rpx;
     opacity: 0.3;
-  }
-  
-  .empty-tip text {
+}
+
+.empty-tip text {
     font-size: 30rpx;
     color: #999;
-  }
-  
-  .meal-records {
+}
+
+.meal-records {
     display: flex;
     flex-direction: column;
-  }
-  
-  .meal-item {
+}
+
+.meal-item {
     display: flex;
     align-items: center;
     padding: 25rpx 0;
     border-bottom: 1rpx solid #eee;
-  }
-  
-  .meal-item:last-child {
+}
+
+.meal-item:last-child {
     border-bottom: none;
-  }
-  
-  .meal-time {
+}
+
+.meal-time {
     font-size: 36rpx;
     font-weight: bold;
     color: #333;
     width: 150rpx;
-  }
-  
-  .meal-type {
+}
+
+.meal-type {
     font-size: 28rpx;
     color: #4CAF50;
     background: #e8f5e9;
     padding: 8rpx 20rpx;
     border-radius: 30rpx;
     margin-left: 20rpx;
-  }
-  
-  .meal-actions {
+}
+
+.meal-actions {
     display: flex;
     margin-left: auto;
-  }
-  
-  .edit-icon, .delete-icon {
+}
+
+.edit-icon, .delete-icon {
     width: 50rpx;
     height: 50rpx;
     border-radius: 50%;
@@ -246,78 +341,67 @@
     justify-content: center;
     margin-left: 15rpx;
     font-size: 32rpx;
-  }
-  
-  .edit-icon {
+}
+
+.edit-icon {
     background: #e3f2fd;
     color: #2196F3;
-  }
-  
-  .delete-icon {
+}
+
+.delete-icon {
     background: #ffebee;
     color: #F44336;
-  }
-  
-  /* 浮动按钮组 */
-  .floating-actions {
+}
+
+/* 浮动按钮样式 */
+.floating-actions {
     position: fixed;
-    bottom: 20rpx; /* 增加底部距离，避免过于贴边 */
+    bottom: 20rpx;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 20rpx; /* 增加间距，提升区分度 */
-  }
-  
-  .floating-button {
-    /* 增大按钮尺寸，提升点击区域 */
-    width: 60rpx; /* 固定宽度 */
-    height: 110rpx; /* 固定高度 */
-    min-width: 350rpx; /* 确保按钮宽度一致 */
+    gap: 20rpx;
+}
+
+.floating-button {
+    width: 60rpx;
+    height: 110rpx;
+    min-width: 350rpx;
     font-size: 35rpx;
     font-weight: bold;
-    border-radius: 20rpx; /* 更圆润的边角 */
-    box-shadow: 0 10rpx 15rpx rgba(0, 0, 0, 0.12); /* 增强阴影立体感 */
+    border-radius: 20rpx;
+    box-shadow: 0 10rpx 15rpx rgba(0, 0, 0, 0.12);
     display: flex;
     align-items: center;
-    justify-content: center; /* 文字图标居中对齐 */
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); /* 更顺滑的过渡 */
-    border: none; /* 去除默认边框 */
-  }
-  
-  /* 图标优化 */
-  .button-icon {
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+}
+
+.button-icon {
     font-size: 68rpx;
     margin-right: 20rpx;
-    text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1); /* 图标增加轻微阴影 */
-  }
-  
-  /* 保持原有渐变但增强饱和度 */
-  .floating-button.photo {
+    text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+}
+
+.floating-button.photo {
     background: linear-gradient(135deg, #ffd6b8, #ff9e60);
     color: #fff;
-    text-shadow: 0 2rpx 4rpx rgba(255, 126, 66, 0.2);
-  }
-  
-  .floating-button.record {
+}
+
+.floating-button.record {
     background: linear-gradient(135deg, #e0d0ff, #a98bff);
     color: #fff;
-    text-shadow: 0 2rpx 4rpx rgba(130, 96, 255, 0.2);
-  }
-  
-  /* 增强点击反馈 */
-  .floating-button:active {
+}
+
+.floating-button:active {
     transform: scale(0.96);
     box-shadow: 0 6rpx 15rpx rgba(0, 0, 0, 0.08);
     opacity: 0.95;
-  }
-  
-  /* 增加悬停效果（支持的设备上） */
-  .floating-button:hover {
-    box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.15);
-  }
-  
-  /* 时间选择器弹窗 */
-  .time-picker-modal {
+}
+
+/* 时间选择器弹窗 */
+.time-picker-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -328,56 +412,56 @@
     align-items: center;
     justify-content: center;
     z-index: 1000;
-  }
-  
-  .picker-container {
+}
+
+.picker-container {
     background: white;
     width: 80%;
     border-radius: 16rpx;
     overflow: hidden;
-    box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
-  }
-  
-  .picker-header {
+    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.picker-header {
     padding: 30rpx;
     text-align: center;
     background: #f5f5f5;
     border-bottom: 1rpx solid #eee;
-  }
-  
-  .picker-title {
+}
+
+.picker-title {
     font-size: 36rpx;
     font-weight: bold;
     color: #333;
     display: block;
     margin-bottom: 10rpx;
-  }
-  
-  .picker-display {
+}
+
+.picker-display {
     padding: 40rpx 0;
     text-align: center;
     background: #f9f9f9;
-  }
-  
-  .picker-time {
+}
+
+.picker-time {
     font-size: 48rpx;
     font-weight: bold;
     color: #4CAF50;
     display: block;
     margin-bottom: 15rpx;
-  }
-  
-  .picker-hint {
+}
+
+.picker-hint {
     font-size: 28rpx;
     color: #999;
-  }
-  
-  .picker-buttons {
+}
+
+.picker-buttons {
     display: flex;
     border-top: 1rpx solid #eee;
-  }
-  
-  .picker-btn {
+}
+
+.picker-btn {
     flex: 1;
     height: 100rpx;
     line-height: 100rpx;
@@ -385,103 +469,32 @@
     border-radius: 0;
     background: transparent;
     position: relative;
-  }
-  
-  .picker-btn::after {
+}
+
+.picker-btn::after {
     content: '';
     position: absolute;
     top: 0;
     bottom: 0;
     width: 1rpx;
     background: #eee;
-  }
-  
-  .picker-btn:first-child::after {
+}
+
+.picker-btn:first-child::after {
     display: none;
-  }
-  
-  .picker-btn.cancel {
+}
+
+.picker-btn.cancel {
     color: #666;
-  }
-  
-  .picker-btn.confirm {
+}
+
+.picker-btn.confirm {
     color: #4CAF50;
     font-weight: bold;
-  }
-  
-  .progress-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25rpx;
-  }
-  
-  /* 首次使用引导弹窗样式 */
-  .first-use-guide {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .guide-mask {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-  }
-  
-  .guide-dialog {
-    position: relative;
-    width: 80%;
-    max-width: 600rpx;
-    background-color: white;
-    border-radius: 24rpx;
-    padding: 60rpx 30rpx;
-    text-align: center;
-    box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.3);
-  }
-  
-  .guide-icon {
-    font-size: 80rpx;
-    margin-bottom: 30rpx;
-  }
-  
-  .guide-title {
-    font-size: 38rpx;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20rpx;
-  }
-  
-  .guide-desc {
-    font-size: 30rpx;
-    color: #666;
-    line-height: 1.6;
-    margin-bottom: 40rpx;
-  }
-  
-  .guide-button {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    font-size: 34rpx;
-    padding: 25rpx 0;
-    border-radius: 15rpx;
-    border: none;
-  }
-  
-  .guide-button::after {
-    border: none;
-  }
-  
-  /* 食物识别结果弹窗 */
-  .food-result-modal {
+}
+
+/* 食物识别结果弹窗 */
+.food-result-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -492,117 +505,172 @@
     justify-content: center;
     align-items: center;
     z-index: 100;
-  }
-  
-  .result-container {
+}
+
+.result-container {
     width: 85%;
     background: white;
     border-radius: 20rpx;
     padding: 30rpx;
     max-height: 80vh;
     overflow-y: auto;
-  }
-  
-  .result-header {
+}
+
+.result-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20rpx;
-  }
-  
-  .result-title {
+}
+
+.result-title {
     font-size: 36rpx;
     font-weight: bold;
-  }
-  
-  .close-icon {
+}
+
+.close-icon {
     font-size: 40rpx;
     color: #666;
-  }
-  
-  .food-image-container {
+}
+
+.recognition-results {
+    margin-bottom: 30rpx;
+    border-radius: 10rpx;
+    border: 1rpx solid #eee;
+    overflow: hidden;
+    max-height: 300rpx;
+    overflow-y: auto;
+}
+
+.result-item {
+    padding: 20rpx;
+    border-bottom: 1rpx solid #eee;
+    background: #fff;
+    transition: background-color 0.2s;
+}
+
+.result-item:last-child {
+    border-bottom: none;
+}
+
+.result-item-selected {
+    background-color: #f1f8e9;
+    border-left: 6rpx solid #4CAF50;
+}
+
+.result-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10rpx;
+}
+
+.recognition-probability {
+    font-size: 24rpx;
+    color: #888;
+    background: #f5f5f5;
+    padding: 4rpx 12rpx;
+    border-radius: 12rpx;
+}
+
+.food-image-container {
     width: 100%;
-    min-height: 300rpx; /* 最小高度保证基础显示 */
-    max-height: 500rpx; /* 最大高度避免占用过多空间 */
+    min-height: 300rpx;
+    max-height: 500rpx;
     margin-bottom: 30rpx;
     border-radius: 10rpx;
     overflow: hidden;
-    background: #f5f5f5; /* 背景色避免图片加载前空白 */
-    display: flex; /* 居中图片 */
+    background: #f5f5f5;
+    display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20rpx; /* 内边距避免图片贴边 */
+    padding: 20rpx;
     box-sizing: border-box;
-  }
-  
-  .food-info {
+}
+
+.food-image-container image {
+    width: 100%;
+    height: auto;
+    border-radius: 8rpx;
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+    object-fit: contain;
+}
+
+.food-info {
     margin-bottom: 30rpx;
-  }
-  
-  .food-name {
+}
+
+.food-name {
     font-size: 34rpx;
     font-weight: bold;
     margin-bottom: 15rpx;
     display: block;
-  }
-  
-  .food-calories {
+}
+
+.food-calories {
     font-size: 30rpx;
     color: #ff6b35;
     margin-bottom: 15rpx;
-  }
-  
-  .food-nutrition {
+}
+
+.food-nutrition {
     display: flex;
     justify-content: space-between;
     font-size: 26rpx;
     color: #666;
-  }
-  
-  .diet-advice {
+}
+
+.food-description {
+    background: #f9f9f9;
+    padding: 20rpx;
+    border-radius: 10rpx;
+    margin-bottom: 30rpx;
+}
+
+.diet-advice {
     background: #f5f5f5;
     padding: 20rpx;
     border-radius: 10rpx;
     margin-bottom: 30rpx;
-  }
-  
-  .advice-title {
+}
+
+.advice-title {
     font-size: 28rpx;
     font-weight: bold;
     display: block;
     margin-bottom: 10rpx;
-  }
-  
-  .advice-content {
+}
+
+.advice-content {
     font-size: 26rpx;
     color: #333;
-  }
-  
-  .result-buttons {
+}
+
+.result-buttons {
     display: flex;
     gap: 20rpx;
-  }
-  
-  .result-btn {
+}
+
+.result-btn {
     flex: 1;
     padding: 20rpx 0;
     border-radius: 10rpx;
     font-size: 30rpx;
     text-align: center;
-  }
-  
-  .result-btn.cancel {
+}
+
+.result-btn.cancel {
     background: #f5f5f5;
     color: #666;
-  }
-  
-  .result-btn.confirm {
+}
+
+.result-btn.confirm {
     background: #4CAF50;
     color: white;
-  }
-  
-  /* 操作反馈提示 */
-  .action-toast {
+}
+
+/* 操作反馈提示 */
+.action-toast {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -613,74 +681,4 @@
     border-radius: 10rpx;
     font-size: 30rpx;
     z-index: 9999;
-  }
-
-  /* 识别结果列表样式 */
-.recognition-results {
-    margin-bottom: 30rpx;
-    border-radius: 10rpx;
-    border: 1rpx solid #eee;
-    overflow: hidden;
-    max-height: 300rpx;
-    overflow-y: auto;
-  }
-  
-  .result-item {
-    padding: 20rpx;
-    border-bottom: 1rpx solid #eee;
-    background: #fff;
-    transition: background-color 0.2s;
-  }
-  
-  .result-item:last-child {
-    border-bottom: none;
-  }
-  
-  .result-item-selected {
-    background-color: #f1f8e9;
-    border-left: 6rpx solid #4CAF50;
-  }
-  
-  .result-item-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10rpx;
-  }
-  
-  .recognition-probability {
-    font-size: 24rpx;
-    color: #888;
-    background: #f5f5f5;
-    padding: 4rpx 12rpx;
-    border-radius: 12rpx;
-  }
-  
-  .food-description {
-    background: #f9f9f9;
-    padding: 20rpx;
-    border-radius: 10rpx;
-    margin-bottom: 30rpx;
-  }
-
-  /* 优化图片容器样式 */
-.food-image-container {
-    margin-bottom: 30rpx;
-    border-radius: 10rpx;
-    overflow: hidden;
-    background: #f5f5f5;
-    padding: 20rpx;
-    box-sizing: border-box;
-  }
-  
-  .food-image-container image {
-    width: 100%;
-    height: auto; /* 新增：自动计算高度保持比例 */
-    border-radius: 8rpx;
-    box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
-    object-fit: contain; /* 新增：保持图片比例，完整显示在容器内 */
-  }
-  
-  .food-image-container image[src] {
-    opacity: 1;
-  }
+}

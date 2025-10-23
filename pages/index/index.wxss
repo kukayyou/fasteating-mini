@@ -1,20 +1,26 @@
+/* index/index.wxss */
 .container {
     padding: 30rpx;
     background-color: #f8f9fa;
     min-height: 100vh;
     padding-bottom: 120rpx; /* 为浮动按钮留出空间 */
+    box-sizing: border-box;
   }
   
   /* 状态卡片 */
   .status-card {
     border-radius: 20rpx;
     padding: 30rpx;
-    margin-bottom: 40rpx;
+    margin-bottom: 30rpx;
     color: white;
     box-shadow: 0 6rpx 18rpx rgba(0,0,0,0.1);
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .status-card.eating {
@@ -33,15 +39,15 @@
     font-size: 48rpx;
     font-weight: bold;
     margin-bottom: 15rpx;
+    transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  /* 新增状态文字颜色 */
   .eating-text {
-    color: white; /* 进食中状态文字为白色 */
+    color: white;
   }
   
   .fasting-text {
-    color: #FFEB3B; /* 断食中状态文字为黄色 */
+    color: #FFEB3B;
   }
   
   .status-info {
@@ -64,8 +70,10 @@
     background: white;
     border-radius: 16rpx;
     padding: 30rpx;
-    margin-bottom: 40rpx;
+    margin-bottom: 30rpx;
     box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+    width: 100%;
+    box-sizing: border-box;
   }
   
   .progress-container {
@@ -108,7 +116,13 @@
     background: white;
     border-radius: 16rpx;
     padding: 30rpx;
+    margin-bottom: 30rpx;
     box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 500rpx;
+    display: flex;
+    flex-direction: column;
   }
   
   .section-header {
@@ -116,6 +130,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 25rpx;
+    flex-shrink: 0;
   }
   
   .section-title {
@@ -131,11 +146,46 @@
     color: #666;
   }
   
+  /* 滚动容器 */
+  .meal-scroll-container {
+    flex-grow: 1;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .meal-content {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 10rpx;
+  }
+  
+  .meal-content::-webkit-scrollbar {
+    width: 6rpx;
+  }
+  
+  .meal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3rpx;
+  }
+  
+  .meal-content::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 3rpx;
+  }
+  
+  .meal-content::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
+  }
+  
   .empty-tip {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 40rpx 0;
+    height: 100%;
+    justify-content: center;
   }
   
   .empty-icon {
@@ -208,37 +258,66 @@
     color: #F44336;
   }
   
-  /* 浮动记录按钮 */
-  .floating-button {
+  /* 浮动按钮组 */
+  .floating-actions {
     position: fixed;
-    bottom: 60rpx;
+    bottom: 20rpx; /* 增加底部距离，避免过于贴边 */
     left: 50%;
     transform: translateX(-50%);
-    background: linear-gradient(135deg, #d6c2ff, #b8a1ff);
-    color: white;
-    border-radius: 50rpx;
-    font-size: 34rpx;
+    display: flex;
+    gap: 20rpx; /* 增加间距，提升区分度 */
+  }
+  
+  .floating-button {
+    /* 增大按钮尺寸，提升点击区域 */
+    width: 60rpx; /* 固定宽度 */
+    height: 110rpx; /* 固定高度 */
+    min-width: 350rpx; /* 确保按钮宽度一致 */
+    font-size: 35rpx;
     font-weight: bold;
-    box-shadow: 0 8rpx 20rpx rgba(184, 161, 255, 0.3);
+    border-radius: 20rpx; /* 更圆润的边角 */
+    box-shadow: 0 10rpx 15rpx rgba(0, 0, 0, 0.12); /* 增强阴影立体感 */
     display: flex;
     align-items: center;
-    padding: 20rpx 40rpx;
-    transition: all 0.3s ease;
+    justify-content: center; /* 文字图标居中对齐 */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); /* 更顺滑的过渡 */
+    border: none; /* 去除默认边框 */
   }
   
-  .floating-button:active {
-    transform: translateX(-50%) scale(0.95);
-    box-shadow: 0 4rpx 10rpx rgba(184, 161, 255, 0.2);
-  }
-  
+  /* 图标优化 */
   .button-icon {
-    font-size: 44rpx;
-    margin-right: 15rpx;
+    font-size: 68rpx;
+    margin-right: 20rpx;
+    text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1); /* 图标增加轻微阴影 */
   }
-  /* 原有样式保持不变，只添加时间选择器样式 */
-
-/* 时间选择器弹窗 */
-.time-picker-modal {
+  
+  /* 保持原有渐变但增强饱和度 */
+  .floating-button.photo {
+    background: linear-gradient(135deg, #ffd6b8, #ff9e60);
+    color: #fff;
+    text-shadow: 0 2rpx 4rpx rgba(255, 126, 66, 0.2);
+  }
+  
+  .floating-button.record {
+    background: linear-gradient(135deg, #e0d0ff, #a98bff);
+    color: #fff;
+    text-shadow: 0 2rpx 4rpx rgba(130, 96, 255, 0.2);
+  }
+  
+  /* 增强点击反馈 */
+  .floating-button:active {
+    transform: scale(0.96);
+    box-shadow: 0 6rpx 15rpx rgba(0, 0, 0, 0.08);
+    opacity: 0.95;
+  }
+  
+  /* 增加悬停效果（支持的设备上） */
+  .floating-button:hover {
+    box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.15);
+  }
+  
+  /* 时间选择器弹窗 */
+  .time-picker-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -272,11 +351,6 @@
     color: #333;
     display: block;
     margin-bottom: 10rpx;
-  }
-  
-  .picker-subtitle {
-    font-size: 28rpx;
-    color: #666;
   }
   
   .picker-display {
@@ -334,6 +408,7 @@
     color: #4CAF50;
     font-weight: bold;
   }
+  
   .progress-header {
     display: flex;
     justify-content: space-between;
@@ -341,3 +416,271 @@
     margin-bottom: 25rpx;
   }
   
+  /* 首次使用引导弹窗样式 */
+  .first-use-guide {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .guide-mask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  
+  .guide-dialog {
+    position: relative;
+    width: 80%;
+    max-width: 600rpx;
+    background-color: white;
+    border-radius: 24rpx;
+    padding: 60rpx 30rpx;
+    text-align: center;
+    box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.3);
+  }
+  
+  .guide-icon {
+    font-size: 80rpx;
+    margin-bottom: 30rpx;
+  }
+  
+  .guide-title {
+    font-size: 38rpx;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20rpx;
+  }
+  
+  .guide-desc {
+    font-size: 30rpx;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 40rpx;
+  }
+  
+  .guide-button {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 34rpx;
+    padding: 25rpx 0;
+    border-radius: 15rpx;
+    border: none;
+  }
+  
+  .guide-button::after {
+    border: none;
+  }
+  
+  /* 食物识别结果弹窗 */
+  .food-result-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+  }
+  
+  .result-container {
+    width: 85%;
+    background: white;
+    border-radius: 20rpx;
+    padding: 30rpx;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  
+  .result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20rpx;
+  }
+  
+  .result-title {
+    font-size: 36rpx;
+    font-weight: bold;
+  }
+  
+  .close-icon {
+    font-size: 40rpx;
+    color: #666;
+  }
+  
+  .food-image-container {
+    width: 100%;
+    min-height: 300rpx; /* 最小高度保证基础显示 */
+    max-height: 500rpx; /* 最大高度避免占用过多空间 */
+    margin-bottom: 30rpx;
+    border-radius: 10rpx;
+    overflow: hidden;
+    background: #f5f5f5; /* 背景色避免图片加载前空白 */
+    display: flex; /* 居中图片 */
+    justify-content: center;
+    align-items: center;
+    padding: 20rpx; /* 内边距避免图片贴边 */
+    box-sizing: border-box;
+  }
+  
+  .food-info {
+    margin-bottom: 30rpx;
+  }
+  
+  .food-name {
+    font-size: 34rpx;
+    font-weight: bold;
+    margin-bottom: 15rpx;
+    display: block;
+  }
+  
+  .food-calories {
+    font-size: 30rpx;
+    color: #ff6b35;
+    margin-bottom: 15rpx;
+  }
+  
+  .food-nutrition {
+    display: flex;
+    justify-content: space-between;
+    font-size: 26rpx;
+    color: #666;
+  }
+  
+  .diet-advice {
+    background: #f5f5f5;
+    padding: 20rpx;
+    border-radius: 10rpx;
+    margin-bottom: 30rpx;
+  }
+  
+  .advice-title {
+    font-size: 28rpx;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10rpx;
+  }
+  
+  .advice-content {
+    font-size: 26rpx;
+    color: #333;
+  }
+  
+  .result-buttons {
+    display: flex;
+    gap: 20rpx;
+  }
+  
+  .result-btn {
+    flex: 1;
+    padding: 20rpx 0;
+    border-radius: 10rpx;
+    font-size: 30rpx;
+    text-align: center;
+  }
+  
+  .result-btn.cancel {
+    background: #f5f5f5;
+    color: #666;
+  }
+  
+  .result-btn.confirm {
+    background: #4CAF50;
+    color: white;
+  }
+  
+  /* 操作反馈提示 */
+  .action-toast {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 20rpx 40rpx;
+    border-radius: 10rpx;
+    font-size: 30rpx;
+    z-index: 9999;
+  }
+
+  /* 识别结果列表样式 */
+.recognition-results {
+    margin-bottom: 30rpx;
+    border-radius: 10rpx;
+    border: 1rpx solid #eee;
+    overflow: hidden;
+    max-height: 300rpx;
+    overflow-y: auto;
+  }
+  
+  .result-item {
+    padding: 20rpx;
+    border-bottom: 1rpx solid #eee;
+    background: #fff;
+    transition: background-color 0.2s;
+  }
+  
+  .result-item:last-child {
+    border-bottom: none;
+  }
+  
+  .result-item-selected {
+    background-color: #f1f8e9;
+    border-left: 6rpx solid #4CAF50;
+  }
+  
+  .result-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10rpx;
+  }
+  
+  .recognition-probability {
+    font-size: 24rpx;
+    color: #888;
+    background: #f5f5f5;
+    padding: 4rpx 12rpx;
+    border-radius: 12rpx;
+  }
+  
+  .food-description {
+    background: #f9f9f9;
+    padding: 20rpx;
+    border-radius: 10rpx;
+    margin-bottom: 30rpx;
+  }
+
+  /* 优化图片容器样式 */
+.food-image-container {
+    margin-bottom: 30rpx;
+    border-radius: 10rpx;
+    overflow: hidden;
+    background: #f5f5f5;
+    padding: 20rpx;
+    box-sizing: border-box;
+  }
+  
+  .food-image-container image {
+    width: 100%;
+    height: auto; /* 新增：自动计算高度保持比例 */
+    border-radius: 8rpx;
+    box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+    object-fit: contain; /* 新增：保持图片比例，完整显示在容器内 */
+  }
+  
+  .food-image-container image[src] {
+    opacity: 1;
+  }

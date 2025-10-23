@@ -1,17 +1,15 @@
+<!-- index/index.wxml -->
 <view class="container">
   <!-- 顶部状态卡片 -->
   <view class="status-card {{isFasting ? 'fasting' : 'eating'}}">
     <view class="status-content">
       <view class="status-text {{isFasting ? 'fasting-text' : 'eating-text'}}">
-        {{isFasting ? '断食中' : '进食中'}}
+        {{isFasting ? '断食中' : '可进食'}}
       </view>
       <view class="status-info">
         <view class="timer">
           {{fastingMode === '168' ? '16:8' : '20:4'}} 模式
         </view>
-        <!--view class="time-range">
-          {{eatingStart}} - {{eatingEnd}}
-        </view-->
       </view>
     </view>
   </view>
@@ -23,7 +21,7 @@
     </view>
     <view class="progress-container">
       <view class="progress-bar">
-        <view class="progress-fill" style="width: {{progress}}%"></view>
+        <view class="progress-fill" style="width: {{progress}}"></view>
       </view>
       <view class="progress-labels">
         <text>{{eatingStart}}</text>
@@ -40,34 +38,37 @@
   <view class="meal-section">
     <view class="section-header">
       <text class="section-title">今日进餐记录</text>
-      <!--text class="meal-count">已记录 {{todayMeals.length}} 次</text-->
+      <text class="meal-count">已记录 {{todayMeals.length}} 次</text>
     </view>
     
-    <view wx:if="{{todayMeals.length === 0}}" class="empty-tip">
-      <image src="/images/empty.png" class="empty-icon"></image>
-      <text>今日尚未记录进餐</text>
-    </view>
-    
-    <view wx:else class="meal-records">
-      <block wx:for="{{todayMeals}}" wx:key="index">
-        <view class="meal-item">
-          <view class="meal-time">{{item}}</view>
-          <view class="meal-type">{{getMealType(index)}}</view>
-          <view class="meal-actions">
-            <view class="edit-icon" bindtap="showTimePicker" data-index="{{index}}">✎</view>
-            <view class="delete-icon" bindtap="deleteMeal" data-index="{{index}}">✕</view>
-          </view>
+    <view class="meal-scroll-container">
+      <view class="meal-content">
+        <view wx:if="{{todayMeals.length === 0}}" class="empty-tip">
+          <image src="/images/empty.png" class="empty-icon"></image>
+          <text>今日尚未记录进餐</text>
         </view>
-      </block>
+        
+        <view wx:else class="meal-records">
+          <block wx:for="{{todayMeals}}" wx:key="item">
+            <view class="meal-item">
+              <view class="meal-time">{{item}}</view>
+              <view class="meal-type">{{getMealType(index)}}</view>
+              <view class="meal-actions">
+                <view class="edit-icon" bindtap="showTimePicker" data-index="{{index}}">✎</view>
+                <view class="delete-icon" bindtap="deleteMeal" data-index="{{index}}">✕</view>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
     </view>
   </view>
   
-  <!-- 时间选择器弹窗（保持原设计风格） -->
+  <!-- 时间选择器弹窗 -->
   <view class="time-picker-modal" wx:if="{{showPicker}}">
     <view class="picker-container">
       <view class="picker-header">
-        <!-- text class="picker-title">编辑进餐时间</text -->
-        <!--text class="picker-title">请选择新的进餐时间</text-->
+        <text class="picker-title">编辑进餐时间</text>
       </view>
       
       <picker 
@@ -90,9 +91,84 @@
     </view>
   </view>
   
-  <!-- 浮动记录按钮 -->
-  <view class="floating-button" bindtap="recordMealNow">
-    <view class="button-icon">+</view>
-    <text>记录进餐</text>
+  <!-- 浮动按钮组（拍照和记录按钮水平排列） -->
+  <view class="floating-actions">
+    <button class="floating-button photo" bindtap="takeFoodPhoto">
+      <view class="button-icon">📷</view>
+      <text>拍热量</text>
+    </button>
+    <button class="floating-button record" bindtap="recordMealNow">
+      <view class="button-icon">+</view>
+      <text>记录进餐</text>
+    </button>
   </view>
+</view>
+
+<!-- 食物识别结果弹窗 -->
+<view class="food-result-modal" wx:if="{{showFoodResult}}">
+  <view class="result-container">
+    <view class="result-header">
+      <text class="result-title">食物识别结果</text>
+      <text class="close-icon" bindtap="closeFoodResult">×</text>
+    </view>
+    
+    <!-- 识别结果列表 -->
+    <view class="recognition-results">
+      <view class="result-item" 
+        wx:for="{{recognizedFoods}}" 
+        wx:key="index"
+        bindtap="selectFood"
+        data-index="{{index}}"
+        class="{{selectedFoodIndex == index ? 'result-item-selected' : ''}}">
+        <view class="result-item-header">
+          <text class="food-name">{{item.name}}</text>
+          <text class="recognition-probability">匹配度 {{item.probability}}%</text>
+        </view>
+        <text class="food-calories">{{item.calories}}</text>
+      </view>
+    </view>
+    
+    <!-- 选中食物详情 -->
+    <view class="selected-food-detail">
+    <!-- 优先展示用户拍摄的原始图片 -->
+  <view class="food-image-container">
+    <text class="advice-title" style="margin-bottom: 15rpx; display: block;"></text>
+    <image 
+      src="{{takenImagePath}}" 
+      mode="widthFix"
+      binderror="onFoodImageError"
+    ></image>
+  </view>
+      
+      <view class="food-info">
+        <text class="food-name">{{recognizedFood.name}}</text>
+        <text class="food-calories">{{recognizedFood.calories}}</text>
+        
+        <view class="food-nutrition">
+          <text>识别可信度：{{recognizedFood.probability}}%</text>
+        </view>
+      </view>
+      
+      <!-- 食物描述（如果有） -->
+      <view class="food-description" wx:if="{{recognizedFood.description}}">
+        <text class="advice-title">食物简介</text>
+        <text class="advice-content">{{recognizedFood.description}}</text>
+      </view>
+      
+      <view class="diet-advice">
+        <text class="advice-title">饮食建议</text>
+        <text class="advice-content">{{dietAdvice}}</text>
+      </view>
+    </view>
+    
+    <view class="result-buttons">
+      <button class="result-btn cancel" bindtap="closeFoodResult">取消</button>
+      <button class="result-btn confirm" bindtap="saveFoodRecord">记录用餐</button>
+    </view>
+  </view>
+</view>
+
+<!-- 操作反馈提示 -->
+<view class="action-toast" wx:if="{{showMealActionToast}}">
+  <text>{{mealActionFeedback}}</text>
 </view>

@@ -44,7 +44,7 @@
         </view>
         <view class="summary-item">
           <text class="summary-value">{{dayStats.duration}}小时</text>
-          <text class="summary-label">进食窗口</text>
+          <text class="summary-label">耗时</text>
         </view>
       </view>
       

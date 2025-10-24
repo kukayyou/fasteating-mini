@@ -81,8 +81,20 @@ Page({
 
     loadTodayMeals() {
         const today = new Date().toISOString().split('T')[0];
-        const todayMeals = app.globalData.mealRecords[today] || [];
-        this.setData({ todayMeals });
+        // 从完整记录中筛选今日数据，并保留_id
+        const todayFullMeals = app.globalData.fullMealRecords
+            .filter(record => record.date === today)
+            .sort((a, b) => a.time.localeCompare(b.time)); // 按时间排序
+        console.log("todayFullMeals:", todayFullMeals)
+        // 转换为包含id和time的数组
+        const todayMeals = todayFullMeals.map(item => ({
+            id: item._id, // 数据库记录唯一标识
+            time: item.time
+        }));
+
+        this.setData({
+            todayMeals
+        });
     },
 
     updateFastingStatus() {
@@ -175,41 +187,112 @@ Page({
 
     showTimePicker(e) {
         const index = e.currentTarget.dataset.index;
+        const mealItem = this.data.todayMeals[index]; // 获取当前餐食对象（含id和time）
+        if (!mealItem) {
+            wx.showToast({
+                title: '记录不存在',
+                icon: 'none'
+            });
+            return;
+        }
         this.setData({
             showPicker: true,
-            selectedTime: this.data.todayMeals[index],
+            selectedTime: mealItem.time, // 正确获取时间字符串
             editingIndex: index
         });
     },
 
     hidePicker() {
-        this.setData({ showPicker: false });
+        this.setData({
+            showPicker: false
+        });
     },
 
     timeChange(e) {
-        this.setData({ selectedTime: e.detail.value });
+        this.setData({
+            selectedTime: e.detail.value
+        });
     },
 
     updateMealTime() {
-        if (this.data.editingIndex === -1) return;
-        const today = new Date().toISOString().split('T')[0];
-        app.updateMealRecord(today, this.data.editingIndex, this.data.selectedTime)
+        const {
+            editingIndex,
+            todayMeals,
+            selectedTime
+        } = this.data;
+        // 校验索引有效性
+        if (editingIndex === -1 || !todayMeals[editingIndex]) {
+            wx.showToast({
+                title: '记录不存在',
+                icon: 'none'
+            });
+            return;
+        }
+
+        // 获取对应的recordId（数据库中的_id）
+        const recordId = todayMeals[editingIndex].id;
+        if (!recordId) {
+            wx.showToast({
+                title: '无法获取记录ID',
+                icon: 'none'
+            });
+            return;
+        }
+
+        // 调用更新方法，传入recordId和新时间
+        app.updateMealRecord(recordId, selectedTime)
             .then(() => {
-                this.setData({ showPicker: false });
-                this.showToast('记录已更新');
+                this.setData({
+                    showPicker: false
+                });
+                wx.showToast({
+                    title: '记录已更新'
+                });
+            })
+            .catch(err => {
+                console.error('更新失败', err);
+                wx.showToast({
+                    title: '更新失败，请重试',
+                    icon: 'none'
+                });
             });
     },
 
     deleteMeal(e) {
         const index = e.currentTarget.dataset.index;
-        const today = new Date().toISOString().split('T')[0];
-        app.deleteMealRecord(today, index)
-            .then(() => this.showToast('记录已删除'));
+        const {
+            todayMeals
+        } = this.data;
+
+        if (!todayMeals[index]) {
+            wx.showToast({
+                title: '记录不存在',
+                icon: 'none'
+            });
+            return;
+        }
+
+        const recordId = todayMeals[index].id;
+        app.deleteMealRecord(recordId)
+            .then(() => {
+                wx.showToast({
+                    title: '记录已删除'
+                });
+            })
+            .catch(err => {
+                console.error('删除失败', err);
+                wx.showToast({
+                    title: '删除失败，请重试',
+                    icon: 'none'
+                });
+            });
     },
 
     recordMealNow() {
         if (this.data.isRecording) return;
-        this.setData({ isRecording: true });
+        this.setData({
+            isRecording: true
+        });
 
         const now = new Date();
         const mealTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
@@ -224,7 +307,9 @@ Page({
                     if (res.confirm) {
                         this.actuallySaveRecord(mealTime);
                     } else {
-                        this.setData({ isRecording: false });
+                        this.setData({
+                            isRecording: false
+                        });
                     }
                 }
             });
@@ -243,10 +328,15 @@ Page({
             maxHeight: 300,
             success(res) {
                 const tempFilePath = res.tempFilePaths[0];
-                that.setData({ takenImagePath: tempFilePath });
+                that.setData({
+                    takenImagePath: tempFilePath
+                });
                 that.imageToBase64(tempFilePath)
                     .then(base64 => that.recognizeFoodByApi(base64))
-                    .catch(() => wx.showToast({ title: '图片处理失败', icon: 'none' }));
+                    .catch(() => wx.showToast({
+                        title: '图片处理失败',
+                        icon: 'none'
+                    }));
             }
         });
     },
@@ -256,8 +346,8 @@ Page({
             wx.getFileSystemManager().readFile({
                 filePath,
                 encoding: 'base64',
-                success:(res) => resolve(res.data),
-                fail:(err) => reject(err)
+                success: (res) => resolve(res.data),
+                fail: (err) => reject(err)
             });
         });
     },
@@ -271,21 +361,34 @@ Page({
             app.getFoodApiToken();
 
         getToken.then(token => {
-            wx.showLoading({ title: '识别中...' });
+            wx.showLoading({
+                title: '识别中...'
+            });
             wx.request({
                 url: `https://aip.baidubce.com/rest/2.0/image-classify/v2/dish?access_token=${token}`,
                 method: 'POST',
-                header: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                data: { image: base64Image, baike_num: 1 },
+                header: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: {
+                    image: base64Image,
+                    baike_num: 1
+                },
                 success(res) {
                     wx.hideLoading();
                     if (res.data.error_code) {
-                        wx.showToast({ title: `识别失败：${res.data.error_msg}`, icon: 'none' });
+                        wx.showToast({
+                            title: `识别失败：${res.data.error_msg}`,
+                            icon: 'none'
+                        });
                         return;
                     }
                     const results = res.data.result || [];
                     if (results.length === 0) {
-                        wx.showToast({ title: '未识别到食物', icon: 'none' });
+                        wx.showToast({
+                            title: '未识别到食物',
+                            icon: 'none'
+                        });
                         return;
                     }
                     const formattedResults = results.map(item => ({
@@ -305,10 +408,16 @@ Page({
                 },
                 fail() {
                     wx.hideLoading();
-                    wx.showToast({ title: '网络错误，请重试', icon: 'none' });
+                    wx.showToast({
+                        title: '网络错误，请重试',
+                        icon: 'none'
+                    });
                 }
             });
-        }).catch(() => wx.showToast({ title: '获取授权失败', icon: 'none' }));
+        }).catch(() => wx.showToast({
+            title: '获取授权失败',
+            icon: 'none'
+        }));
     },
 
     selectFood(e) {
@@ -322,7 +431,10 @@ Page({
     },
 
     generateDietAdvice(food) {
-        const { isFasting, fastingMode } = this.data;
+        const {
+            isFasting,
+            fastingMode
+        } = this.data;
         if (isFasting) {
             return `当前处于断食期，建议避免进食。识别到的食物为${food.name}，请遵守断食计划哦~`;
         }
@@ -334,14 +446,16 @@ Page({
                 baseAdvice = `${food.name}富含膳食纤维，`;
             }
         }
-        return fastingMode === '168' 
-            ? `${baseAdvice}适合16:8模式，建议控制总量并搭配蔬菜。`
-            : `${baseAdvice}20:4模式下需计入每日总量，建议适量食用。`;
+        return fastingMode === '168' ?
+            `${baseAdvice}适合16:8模式，建议控制总量并搭配蔬菜。` :
+            `${baseAdvice}20:4模式下需计入每日总量，建议适量食用。`;
     },
 
     saveFoodRecord() {
         if (this.data.isRecording) return;
-        this.setData({ isRecording: true });
+        this.setData({
+            isRecording: true
+        });
         const now = new Date();
         const mealTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
         this.actuallySaveRecord(mealTime);
@@ -356,11 +470,18 @@ Page({
                     mealActionFeedback: '用餐记录已保存',
                     showMealActionToast: true
                 });
-                setTimeout(() => this.setData({ showMealActionToast: false }), 2000);
+                setTimeout(() => this.setData({
+                    showMealActionToast: false
+                }), 2000);
             })
             .catch(() => {
-                this.setData({ isRecording: false });
-                wx.showToast({ title: '保存失败，请重试', icon: 'none' });
+                this.setData({
+                    isRecording: false
+                });
+                wx.showToast({
+                    title: '保存失败，请重试',
+                    icon: 'none'
+                });
             });
     },
 
@@ -369,14 +490,21 @@ Page({
             mealActionFeedback: message,
             showMealActionToast: true
         });
-        setTimeout(() => this.setData({ showMealActionToast: false }), 2000);
+        setTimeout(() => this.setData({
+            showMealActionToast: false
+        }), 2000);
     },
 
     closeFoodResult() {
-        this.setData({ showFoodResult: false });
+        this.setData({
+            showFoodResult: false
+        });
     },
 
     onFoodImageError() {
-        wx.showToast({ title: '图片加载失败', icon: 'none' });
+        wx.showToast({
+            title: '图片加载失败',
+            icon: 'none'
+        });
     }
 });

@@ -76,11 +76,13 @@
                     <text>今日尚未记录进餐</text>
                 </view>
                 <view wx:else class="meal-records">
-                    <block wx:for="{{todayMeals}}" wx:key="item">
+                    <block wx:for="{{todayMeals}}" wx:key="id">
+                        <!-- 建议用 id 作为 key（唯一） -->
                         <view class="meal-item">
-                            <view class="meal-time">{{item}}</view>
+                            <view class="meal-time">{{item.time}}</view> <!-- 正确：访问 time 属性 -->
                             <view class="meal-type">{{getMealType(index)}}</view>
                             <view class="meal-actions">
+                                <!-- 保持原逻辑：通过 index 获取对应项的 id -->
                                 <view class="edit-icon" bindtap="showTimePicker" data-index="{{index}}">✎</view>
                                 <view class="delete-icon" bindtap="deleteMeal" data-index="{{index}}">✕</view>
                             </view>
@@ -99,7 +101,7 @@
             </view>
             <picker mode="time" value="{{selectedTime}}" start="00:00" end="23:59" bindchange="timeChange">
                 <view class="picker-display">
-                    <text class="picker-time">{{selectedTime}}</text>
+                    <text class="picker-time">{{selectedTime}}</text> <!-- 正确显示时间字符串 -->
                     <text class="picker-hint">点击选择时间</text>
                 </view>
             </picker>
@@ -130,9 +132,7 @@
                 <text class="close-icon" bindtap="closeFoodResult">×</text>
             </view>
             <view class="recognition-results">
-                <view class="result-item" wx:for="{{recognizedFoods}}" wx:key="index" 
-                      bindtap="selectFood" data-index="{{index}}" 
-                      class="{{selectedFoodIndex == index ? 'result-item-selected' : ''}}">
+                <view class="result-item" wx:for="{{recognizedFoods}}" wx:key="index" bindtap="selectFood" data-index="{{index}}" class="{{selectedFoodIndex == index ? 'result-item-selected' : ''}}">
                     <view class="result-item-header">
                         <text class="food-name">{{item.name}}</text>
                         <text class="recognition-probability">匹配度 {{item.probability}}%</text>

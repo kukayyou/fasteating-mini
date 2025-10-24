@@ -441,5 +441,20 @@ Page({
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const day = date.getDate().toString().padStart(2, '0');
         return `${year}-${month}-${day}`;
-    }
+    },
+    onShareAppMessage() {
+        return {
+          title: '我的断食统计数据，一起来坚持健康计划！',
+          path: '/pages/stats/stats',
+          imageUrl: '/images/share-friend.png'
+        }
+      },
+    
+      onShareTimeline() {
+        return {
+          title: '看看我的断食成果，加入健康生活方式！',
+          query: 'from=timeline',
+          imageUrl: '/images/share-friend.png'
+        }
+      }
 });

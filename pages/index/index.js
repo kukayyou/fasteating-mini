@@ -33,7 +33,23 @@ Page({
         currentMinute: 0,
         hours: []
     },
+    // 分享到微信好友/群聊
+    onShareAppMessage() {
+        return {
+            title: '我正在使用断食计划管理工具，一起来健康饮食吧！',
+            path: '/pages/index/index', // 分享后打开的页面路径
+            imageUrl: '/images/share-friend.png' // 分享时显示的图片
+        }
+    },
 
+    // 分享到朋友圈
+    onShareTimeline() {
+        return {
+            title: '科学断食，健康生活！推荐你使用这款断食计划管理工具',
+            query: 'from=timeline', // 分享携带的参数
+            imageUrl: '/images/share-friend.png' // 分享时显示的图片
+        }
+    },
     onLoad() {
         app.on('userSettingsUpdated', this.handleSettingsUpdate.bind(this));
         app.on('mealRecordsUpdated', this.handleMealRecordsUpdate.bind(this));

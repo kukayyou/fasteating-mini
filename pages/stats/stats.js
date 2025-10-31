@@ -25,7 +25,24 @@ Page({
             completedDays: 0,
             totalDays: 0,
             completionRate: 0
-        }
+        },
+        showWeekDetails: false, // 控制周详情是否展示
+        weekDetailedData: [], // 存储周详细数据
+        showMonthDetails: false, // 控制月详情是否展示
+        monthDetailedData: [] // 存储月详细数据
+    },
+    // 切换周详情展示状态
+    toggleWeekDetails() {
+        this.setData({
+            showWeekDetails: !this.data.showWeekDetails
+        });
+    },
+
+    // 添加切换月详情展示状态的方法
+    toggleMonthDetails() {
+        this.setData({
+            showMonthDetails: !this.data.showMonthDetails
+        });
     },
 
     onLoad() {
@@ -177,11 +194,15 @@ Page({
         let completedDays = 0;
         let totalDays = 0;
         const weekDays = [];
+        const weekDetailedData = []; // 存储详细数据
 
         // 生成一周的日期
         const currentDate = new Date(startDate);
         while (currentDate <= endDate) {
             const dateStr = this.formatDate(currentDate);
+            // 添加以下代码
+            const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+            const weekDayName = `周${weekdays[currentDate.getDay()]}`;
             const meals = records[dateStr] || [];
             // 计算进食窗口时长（修复跨天问题）
             let duration = 0;
@@ -202,6 +223,30 @@ Page({
                 duration = ((endMinutes - startMinutes) / 60).toFixed(1);
             }
             const completed = meals.length > 0 && duration <= durationMeals;
+            // 格式化进餐数据用于详情展示
+            const formattedMeals = meals.map((time, index) => {
+                let type = '';
+                if (fastingMode === '168') {
+                    const types = ['第一餐', '第二餐', '第三餐'];
+                    type = types[index] || '加餐';
+                } else {
+                    const types = ['第一餐', '第二餐'];
+                    type = types[index] || '加餐';
+                }
+                return {
+                    time,
+                    type
+                };
+            });
+            // 保存详细数据
+            weekDetailedData.push({
+                date: dateStr,
+                day: currentDate.getDate(),
+                completed,
+                weekDay: weekDayName, // 新增星期几信息
+                meals: formattedMeals,
+                duration
+            });
 
             if (completed) completedDays++;
             totalDays++;
@@ -219,6 +264,7 @@ Page({
 
         this.setData({
             weekDays,
+            weekDetailedData, // 保存详细数据
             weekStats: {
                 completedDays,
                 totalDays,
@@ -234,12 +280,21 @@ Page({
         const endDate = new Date(startDate);
         endDate.setDate(startDate.getDate() + 6);
 
+        const newWeekStart = this.formatDate(startDate);
+        const newWeekEnd = this.formatDate(endDate);
         this.setData({
-            weekStart: this.formatDate(startDate),
-            weekEnd: this.formatDate(endDate)
+            weekStart: newWeekStart,
+            weekEnd: newWeekEnd,
+            // 临时隐藏详情，触发重新渲染
+            showWeekDetails: false
+        }, () => {
+            // 确保日期更新后再加载数据
+            this.loadWeekStats(startDate, endDate);
+            // 恢复详情展开状态（如果之前是展开的）
+            this.setData({
+                showWeekDetails: this.data.showWeekDetails // 保持原有状态
+            });
         });
-
-        this.loadWeekStats(startDate, endDate);
     },
 
     // 下一周
@@ -249,12 +304,22 @@ Page({
         const endDate = new Date(startDate);
         endDate.setDate(startDate.getDate() + 6);
 
+        const newWeekStart = this.formatDate(startDate);
+        const newWeekEnd = this.formatDate(endDate);
+        // 先更新起止日期，再重新加载数据，最后保持详情展开状态
         this.setData({
-            weekStart: this.formatDate(startDate),
-            weekEnd: this.formatDate(endDate)
+            weekStart: newWeekStart,
+            weekEnd: newWeekEnd,
+            // 临时隐藏详情，触发重新渲染
+            showWeekDetails: false
+        }, () => {
+            // 确保日期更新后再加载数据
+            this.loadWeekStats(startDate, endDate);
+            // 恢复详情展开状态（如果之前是展开的）
+            this.setData({
+                showWeekDetails: this.data.showWeekDetails // 保持原有状态
+            });
         });
-
-        this.loadWeekStats(startDate, endDate);
     },
 
     // 初始化月统计数据
@@ -263,9 +328,6 @@ Page({
         const month = today.getMonth();
         const year = today.getFullYear();
 
-        const monthStart = new Date(year, month, 1);
-        const monthEnd = new Date(year, month + 1, 0);
-
         this.setData({
             currentMonth: `${year}年${month + 1}月`,
             loadingMonth: true
@@ -273,7 +335,6 @@ Page({
 
         this.loadMonthStats(year, month);
     },
-    // 加载月统计数据
     // 加载月统计数据
     loadMonthStats(year, month) {
         // 获取当前月份第一天和最后一天
@@ -284,6 +345,7 @@ Page({
         const firstDayOfWeek = monthStart.getDay();
 
         const records = app.globalData.mealRecords;
+        console.log("records:", records)
         const fastingMode = app.globalData.fastingMode;
         const expectedMeals = fastingMode === '168' ? 3 : 2;
         const durationMeals = fastingMode === '168' ? 8 : 4;
@@ -291,6 +353,7 @@ Page({
         let completedDays = 0;
         let totalDays = 0;
         const monthDays = [];
+        const monthDetailedData = []; // 存储月详细数据
 
         // 关键修改：补充上个月的末尾日期（而非空白单元格）
         if (firstDayOfWeek > 0) {
@@ -334,6 +397,16 @@ Page({
         const currentDate = new Date(monthStart);
         while (currentDate <= monthEnd) {
             const dateStr = this.formatDate(currentDate);
+            // 获取年份、月份（注意月份从0开始，需+1）、日期
+            const year = currentDate.getFullYear();
+            let month = currentDate.getMonth() + 1; // 月份范围0-11，+1后为1-12
+            let day = currentDate.getDate(); // 日期范围1-31
+
+            // 补零处理：确保月份和日期为两位数（如1月→01月，5日→05日）
+            month = month < 10 ? '0' + month : month;
+            day = day < 10 ? '0' + day : day;
+            // 拼接为目标格式
+            const weekDayName = `${year}年${month}月${day}日`;
             const meals = records[dateStr] || [];
             let duration = 0;
             if (meals.length >= 2) {
@@ -347,6 +420,32 @@ Page({
                 duration = ((endMinutes - startMinutes) / 60).toFixed(1);
             }
             const completed = meals.length > 0 && duration <= durationMeals;
+
+            // 格式化进餐数据用于详情展示
+            const formattedMeals = meals.map((time, index) => {
+                let type = '';
+                if (fastingMode === '168') {
+                    const types = ['第一餐', '第二餐', '第三餐'];
+                    type = types[index] || '加餐';
+                } else {
+                    const types = ['第一餐', '第二餐'];
+                    type = types[index] || '加餐';
+                }
+                return {
+                    time,
+                    type
+                };
+            });
+
+            // 保存详细数据
+            monthDetailedData.push({
+                date: dateStr,
+                day: currentDate.getDate(),
+                completed,
+                weekDay: weekDayName,
+                meals: formattedMeals,
+                duration
+            });
 
             if (completed) completedDays++;
             totalDays++; // 仅统计当前月天数
@@ -366,6 +465,7 @@ Page({
 
         this.setData({
             monthDays,
+            monthDetailedData, // 保存详细数据
             monthStats: {
                 completedDays,
                 totalDays,
@@ -389,13 +489,18 @@ Page({
             prevMonth = 11; // 12月
         }
 
-        // 设置当前月份
         this.setData({
             currentMonth: `${prevYear}年${prevMonth + 1}月`,
+            // 临时隐藏详情，触发重新渲染
+            showMonthDetails: false
+        }, () => {
+            // 确保日期更新后再加载数据
+            this.loadMonthStats(prevYear, prevMonth);
+            // 恢复详情展开状态（如果之前是展开的）
+            this.setData({
+                showMonthDetails: this.data.showMonthDetails
+            });
         });
-
-        // 加载上个月的数据
-        this.loadMonthStats(prevYear, prevMonth);
     },
 
     // 下个月
@@ -413,13 +518,18 @@ Page({
             nextMonth = 0; // 1月
         }
 
-        // 设置当前月份
         this.setData({
             currentMonth: `${nextYear}年${nextMonth + 1}月`,
+            // 临时隐藏详情，触发重新渲染
+            showMonthDetails: false
+        }, () => {
+            // 确保日期更新后再加载数据
+            this.loadMonthStats(nextYear, nextMonth);
+            // 恢复详情展开状态（如果之前是展开的）
+            this.setData({
+                showMonthDetails: this.data.showMonthDetails
+            });
         });
-
-        // 加载下个月的数据
-        this.loadMonthStats(nextYear, nextMonth);
     },
 
     // 选择日期
@@ -444,17 +554,17 @@ Page({
     },
     onShareAppMessage() {
         return {
-          title: '我的断食统计数据，一起来坚持健康计划！',
-          path: '/pages/stats/stats',
-          imageUrl: '/images/share-friend.png'
+            title: '我的断食统计数据，一起来坚持健康计划！',
+            path: '/pages/stats/stats',
+            imageUrl: '/images/share-friend.png'
         }
-      },
-    
-      onShareTimeline() {
+    },
+
+    onShareTimeline() {
         return {
-          title: '看看我的断食成果，加入健康生活方式！',
-          query: 'from=timeline',
-          imageUrl: '/images/share-friend.png'
+            title: '看看我的断食成果，加入健康生活方式！',
+            query: 'from=timeline',
+            imageUrl: '/images/share-friend.png'
         }
-      }
+    }
 });
